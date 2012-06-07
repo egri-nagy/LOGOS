@@ -10,16 +10,16 @@
 
 byte pointer=0;
 byte np = 1;
-       float xs[100];
-       float ys[100];
-       float zs[100]; 
-       float a = -5.5;
-       float b = 3.5;
-       float c = -1;
-       float xn = 0.1;
-       float yn = 0;
-       float zn = 0;
-       float dt = 0.01; 
+float xs[100];
+float ys[100];
+float zs[100]; 
+float a = -5.5;
+float b = 3.5;
+float c = -1;
+float xn = 0.1;
+float yn = 0;
+float zn = 0;
+float dt = 0.01; 
 
 
 
@@ -75,7 +75,7 @@ void setup(){
 
   }
   //delay(2000);
-    GD.wr16(SCROLL_Y, 0);
+  GD.wr16(SCROLL_Y, 0);
 
   graypal();
   GD.microcode(random_code, sizeof(random_code));
@@ -108,11 +108,11 @@ void setup(){
     GD.__end();
   }  
 
-    GD.__wstartspr(0);
+  GD.__wstartspr(0);
   draw_sprite(401,401,spW,0);
   draw_sprite(401,401,spE,0);
 
-    GD.__end();
+  GD.__end();
 
   delay(500);
   //HAD
@@ -136,12 +136,12 @@ void setup(){
     GD.__end();
   }  
 
-    GD.__wstartspr(0);
+  GD.__wstartspr(0);
   draw_sprite(401,401,spH,0);
   draw_sprite(401,401,spA,0);
   draw_sprite(401,401,spD,0);
 
-    GD.__end();
+  GD.__end();
 
   delay(500);
   //NO
@@ -161,11 +161,11 @@ void setup(){
     GD.__end();
   }  
 
-    GD.__wstartspr(0);
+  GD.__wstartspr(0);
   draw_sprite(401,401,spN,0);
   draw_sprite(401,401,spO,0);
 
-    GD.__end();
+  GD.__end();
 
   delay(500);
   //TIME
@@ -191,13 +191,13 @@ void setup(){
     GD.__end();
   }  
 
-    GD.__wstartspr(0);
+  GD.__wstartspr(0);
   draw_sprite(401,401,spT,0);
   draw_sprite(401,401,spI,0);
   draw_sprite(401,401,spM,0);
   draw_sprite(401,401,spE,0);
 
-    GD.__end();
+  GD.__end();
 
   delay(500);
   //BUT
@@ -221,60 +221,61 @@ void setup(){
     GD.__end();
   }  
 
-    GD.__wstartspr(0);
+  GD.__wstartspr(0);
   draw_sprite(401,401,spH,0);
   draw_sprite(401,401,spA,0);
   draw_sprite(401,401,spD,0);
 
-    GD.__end();
+  GD.__end();
 
   delay(500);
 
-  
+
   GD.waitvblank();
 
   fade();
   GD.wr(J1_RESET,1);
-GD.ascii();
-//filling it up with values
-       xs[0] = 0.1; //initial x
-       ys[0] = 0;
-       zs[0] = 0;
+  GD.ascii();
+  //filling it up with values
+  xs[0] = 0.1; //initial x
+  ys[0] = 0;
+  zs[0] = 0;
 
-for (byte i=0; i < 99; i++){
-       xn = ys[i];
-       yn = zs[i];
-       zn = -a*xs[i]-b*ys[i]-zs[i]+c*pow(xs[i],3);
-       xs[i+1] = xs[i]+xn*dt;
-       ys[i+1] = ys[i]+yn*dt;
-       zs[i+1] = zs[i]+zn*dt;
+  for (byte i=0; i < 99; i++){
+    xn = ys[i];
+    yn = zs[i];
+    zn = -a*xs[i]-b*ys[i]-zs[i]+c*pow(xs[i],3);
+    xs[i+1] = xs[i]+xn*dt;
+    ys[i+1] = ys[i]+yn*dt;
+    zs[i+1] = zs[i]+zn*dt;
 
-}
-GD.putstr(0,0,"Chaotic Trajectory");  
+  }
+  GD.putstr(0,0,"Chaotic Trajectory");  
 }
 
 void loop()
 {
   np = (pointer + 1) % 100;
-       xn = ys[pointer];
-       yn = zs[pointer];
-       zn = -a*xs[pointer]-b*ys[pointer]-zs[pointer]+c*pow(xs[pointer],3);
-       xs[np] = xs[pointer]+xn*dt;
-       ys[np] = ys[pointer]+yn*dt;
-       zs[np] = zs[pointer]+zn*dt;
-       pointer = np;
-    GD.__wstartspr(0);
-    draw_sprite(200+(50*xs[(pointer+5*LAG)%100]), 152+(20*ys[(pointer+5*LAG)%100]),spL,0);
-    draw_sprite(200+(50*xs[(pointer+4*LAG)%100]), 152+(20*ys[(pointer+4*LAG)%100]),spO,0);
-    draw_sprite(200+(50*xs[(pointer+3*LAG)%100]), 152+(20*ys[(pointer+3*LAG)%100]),spG,0);
-    draw_sprite(200+(50*xs[(pointer+2*LAG)%100]), 152+(20*ys[(pointer+2*LAG)%100]),spO,0);
-    draw_sprite(200+(50*xs[(pointer+1*LAG)%100]), 152+(20*ys[(pointer+1*LAG)%100]),spS,0);
+  xn = ys[pointer];
+  yn = zs[pointer];
+  zn = -a*xs[pointer]-b*ys[pointer]-zs[pointer]+c*pow(xs[pointer],3);
+  xs[np] = xs[pointer]+xn*dt;
+  ys[np] = ys[pointer]+yn*dt;
+  zs[np] = zs[pointer]+zn*dt;
+  pointer = np;
+  GD.__wstartspr(0);
+  draw_sprite(200+(50*xs[(pointer+5*LAG)%100]), 152+(20*ys[(pointer+5*LAG)%100]),spL,0);
+  draw_sprite(200+(50*xs[(pointer+4*LAG)%100]), 152+(20*ys[(pointer+4*LAG)%100]),spO,0);
+  draw_sprite(200+(50*xs[(pointer+3*LAG)%100]), 152+(20*ys[(pointer+3*LAG)%100]),spG,0);
+  draw_sprite(200+(50*xs[(pointer+2*LAG)%100]), 152+(20*ys[(pointer+2*LAG)%100]),spO,0);
+  draw_sprite(200+(50*xs[(pointer+1*LAG)%100]), 152+(20*ys[(pointer+1*LAG)%100]),spS,0);
 
 
-    GD.__end();
-    GD.waitvblank();
+  GD.__end();
+  GD.waitvblank();
 
 }
+
 
 
 
