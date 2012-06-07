@@ -1,4 +1,20 @@
 #define SPRITE_FRAMES 13
+
+#define spA 0
+#define spD 1
+#define spE 2
+#define spG 3
+#define spH 4
+#define spL 5
+#define spM 6
+#define spN 7
+#define spO 8
+#define spS 9
+#define spT 10
+#define spW 11
+#define spI 12
+
+
 static void draw_sprite(int x, int y, byte anim, byte rot, byte jk = 0) {
   switch (anim) {
   case 0:
