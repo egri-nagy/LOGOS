@@ -41,6 +41,24 @@ void fade(){
 
 void setup(){
   GD.begin();
+  GD.ascii();
+  GD.putstr(0,0,"MINTRO for FLASHBACK 2012");
+  GD.putstr(0,2,"CPU: Atmega 328 8-bit, 32K flash, 2K RAM");
+  GD.putstr(0,4,"Graphic/Sound Chip: Xilinx FPGA" );
+
+  GD.putstr(0,8,"CODE: @" );
+  GD.putstr(0,10,"GFX: pfff" );
+  GD.putstr(0,12,"SFX: 2");
+
+
+  delay(2000);
+  for (int i=0; i<200;i++){
+    GD.wr16(SCROLL_Y, i);
+    GD.waitvblank();
+    GD.waitvblank();
+
+  }
+  delay(2000);
   graypal();
   GD.microcode(random_code, sizeof(random_code));
 
@@ -56,6 +74,7 @@ void setup(){
 
 void loop()
 {
+  graypal();
   delay(2500);
   GD.waitvblank();
 
