@@ -4,7 +4,7 @@
 #include "random.h"
 
 #define GRAY(c)  RGB(c,c,c)
-#define RED RGB(0xff,0xff,0xff)
+#define WHITE RGB(0xff,0xff,0xff)
 
 void graypal(){
   GD.waitvblank();
@@ -17,18 +17,9 @@ void graypal(){
   }
 }
 
-void flash(){
-  GD.waitvblank();
-
-  for (int i = 0; i < 256; i++) {
-    GD.wr16(RAM_PAL + (4 * i + 0) * 2, RED);
-    GD.wr16(RAM_PAL + (4 * i + 1) * 2, RED);
-    GD.wr16(RAM_PAL + (4 * i + 2) * 2, RED);
-    GD.wr16(RAM_PAL + (4 * i + 3) * 2, RED);
-  }
-}
 
 
+//fading out the character palette
 void fade(){
   for (byte i = 0; i < 32; i++) {
     for (int j = RAM_PAL; j < (RAM_PAL + 2048); j += 2) {
@@ -45,23 +36,20 @@ void fade(){
   }
 }
 
+
+
 void setup(){
   GD.begin();
+  graypal();
   GD.microcode(random_code, sizeof(random_code));
 }  
 
 void loop()
 {
-  graypal();
   delay(2500);
   GD.waitvblank();
 
-  flash();
-  delay(200);
-  graypal();
-
   fade();
-//flash();
 }
 
 
