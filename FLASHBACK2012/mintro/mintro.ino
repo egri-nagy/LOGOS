@@ -2,6 +2,7 @@
 #include <GD.h>
 
 #include "random.h"
+#include "sprite.h"
 
 #define GRAY(c)  RGB(c,c,c)
 #define WHITE RGB(0xff,0xff,0xff)
@@ -42,6 +43,15 @@ void setup(){
   GD.begin();
   graypal();
   GD.microcode(random_code, sizeof(random_code));
+
+  GD.copy(PALETTE4A, sprite_sprpal, sizeof(sprite_sprpal));
+  GD.uncompress(RAM_SPRIMG, sprite_sprimg);
+
+  // For show, randomly scatter the frames on the screen
+  GD.__wstartspr(0);
+  for (int anim = 0; anim < SPRITE_FRAMES; anim++)
+    draw_sprite(random(400), random(300), anim, 0);
+  GD.__end();
 }  
 
 void loop()
