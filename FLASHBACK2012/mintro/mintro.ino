@@ -74,7 +74,7 @@ void textshoot(int n){
     GD.waitvblank();  
     GD.__end();
   }  
-  delay(1500);
+  delay(1111);
   for (int i=0; i<142;i++){
     GD.__wstartspr(0);
     for (byte j=0; j<n; j++){ 
@@ -101,9 +101,99 @@ void textshoot(int n){
 }
 
 
+struct voice
+{
+  float f;
+  float a;
+} voices[16];
+
+void load()
+{
+  byte v;
+  unsigned int gg = 0;
+
+  float sum = 0.0;
+  for (v = 0; v < 16; v++) {
+    sum += voices[v].a;
+  }
+  float scale = 255.0 / sum;
+  for (v = 0; v < 16; v++) {
+    byte a = int(voices[v].a * scale);
+    GD.voice(v, 0, int(4 * voices[v].f), a, a);
+  }
+}
+
+
+void note(byte voice, byte m, byte vel)
+{
+  float f0 = 440 * pow(2.0, (m - 69) / 12.0);
+  float a0 = vel / 120.;
+  if (voice == 0) {
+    float choirA[] = { 3.5, 1.6, .7, 3.7, 1, 2 };
+    byte v;
+    for (v = 0; v < 6; v++) {
+      voices[v].f = (v + 1) * f0;
+      voices[v].a = a0 * choirA[v] / 3.7;
+    }
+  } else {
+    voices[voice].f = f0;
+    voices[voice].a = a0;
+  }
+}
+
+static void pause(int n)
+{
+  load();
+  long started = millis();
+  while (millis() < (started + n * 3 / 2)) {
+  np = (pointer + 1) % 100;
+  xn = ys[pointer];
+  yn = zs[pointer];
+  zn = -a*xs[pointer]-b*ys[pointer]-zs[pointer]+c*pow(xs[pointer],3);
+  xs[np] = xs[pointer]+xn*dt;
+  ys[np] = ys[pointer]+yn*dt;
+  zs[np] = zs[pointer]+zn*dt;
+  pointer = np;
+  GD.__wstartspr(0);
+  draw_sprite(200+(50*xs[(pointer+5*LAG)%100]), 152+(20*ys[(pointer+5*LAG)%100]),spL,0);
+  draw_sprite(200+(50*xs[(pointer+4*LAG)%100]), 152+(20*ys[(pointer+4*LAG)%100]),spO,0);
+  draw_sprite(200+(50*xs[(pointer+3*LAG)%100]), 152+(20*ys[(pointer+3*LAG)%100]),spG,0);
+  draw_sprite(200+(50*xs[(pointer+2*LAG)%100]), 152+(20*ys[(pointer+2*LAG)%100]),spO,0);
+  draw_sprite(200+(50*xs[(pointer+1*LAG)%100]), 152+(20*ys[(pointer+1*LAG)%100]),spS,0);
+  GD.__end();
+  GD.waitvblank();
+
+//    GD.waitvblank();
+  }
+}
+
+#define PAUSE(x)      255,x
+#define NOTE(v, p, a) v, p, a
+
+static PROGMEM prog_uchar widor_toccata[] = {
+#include "music.h"
+};
+
+static void play()
+{
+  prog_uchar *pc = widor_toccata;
+  while (pc < (widor_toccata + sizeof(widor_toccata))) {
+    byte a = pgm_read_byte_near(pc++);
+    byte b = pgm_read_byte_near(pc++);
+    if (a == 255) {
+      pause(b);
+    } else {
+      byte c = pgm_read_byte_near(pc++);
+      note(a, b, c);
+    }
+  }
+}
+
+
 void setup(){
   GD.begin();
   GD.ascii();
+  //sound();
   GD.putstr(0,0,"MINTRO for FLASHBACK 2012");
   GD.putstr(0,2,"CPU: Atmega 328 8-bit, 32K flash, 2K RAM");
   GD.putstr(0,4,"Graphic/Sound Chip: Xilinx FPGA" );
@@ -141,36 +231,36 @@ void setup(){
   letters[0]=spW;
   letters[1]=spE;
   textshoot(2);
-  delay(500);  
+  //delay(500);  
   letters[0]=spH;
   letters[1]=spA;
   letters[2]=spD;
   textshoot(3); 
-  delay(500);  
+  //delay(500);  
   letters[0]=spN;
   letters[1]=spO;
   textshoot(2);
-  delay(500);  
+  //delay(500);  
   letters[0]=spT;
   letters[1]=spI;
   letters[2]=spM;
   letters[3]=spE;
   textshoot(4); 
-  delay(500);  
+  //delay(500);  
   letters[0]=spB;
   letters[1]=spU;
   letters[2]=spT;
   textshoot(3); 
-  delay(500);  
+  //delay(500);  
   letters[0]=spW;
   letters[1]=spE;
   textshoot(2);
-  delay(500);  
+  //delay(500);  
   letters[0]=spA;
   letters[1]=spR;
   letters[2]=spE;
   textshoot(3); 
-  delay(500);  
+  //delay(500);  
   letters[0]=spH;
   letters[1]=spE;
   letters[2]=spR;
@@ -202,24 +292,7 @@ void setup(){
 
 void loop()
 {
-  np = (pointer + 1) % 100;
-  xn = ys[pointer];
-  yn = zs[pointer];
-  zn = -a*xs[pointer]-b*ys[pointer]-zs[pointer]+c*pow(xs[pointer],3);
-  xs[np] = xs[pointer]+xn*dt;
-  ys[np] = ys[pointer]+yn*dt;
-  zs[np] = zs[pointer]+zn*dt;
-  pointer = np;
-  GD.__wstartspr(0);
-  draw_sprite(200+(50*xs[(pointer+5*LAG)%100]), 152+(20*ys[(pointer+5*LAG)%100]),spL,0);
-  draw_sprite(200+(50*xs[(pointer+4*LAG)%100]), 152+(20*ys[(pointer+4*LAG)%100]),spO,0);
-  draw_sprite(200+(50*xs[(pointer+3*LAG)%100]), 152+(20*ys[(pointer+3*LAG)%100]),spG,0);
-  draw_sprite(200+(50*xs[(pointer+2*LAG)%100]), 152+(20*ys[(pointer+2*LAG)%100]),spO,0);
-  draw_sprite(200+(50*xs[(pointer+1*LAG)%100]), 152+(20*ys[(pointer+1*LAG)%100]),spS,0);
-
-
-  GD.__end();
-  GD.waitvblank();
+  play();
 
 }
 
