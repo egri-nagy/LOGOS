@@ -8,6 +8,9 @@
 #define WHITE RGB(0xff,0xff,0xff)
 #define LAG 16
 
+//to put maximum for letter there
+byte letters[4];
+
 byte pointer=0;
 byte np = 1;
 float xs[100];
@@ -52,6 +55,43 @@ void fade(){
   }
 }
 
+
+void textshoot(int n){
+
+  //WE
+  for (int i=0; i<142;i++){
+    GD.__wstartspr(0);
+    for (byte j=0; j<n; j++){ 
+      if (j mod 2)
+	{
+	  draw_sprite(200+j*16, i, letters[j], 0);
+	}
+      else
+	{
+	  draw_sprite(200-(j*16), 282-i, letters[j], 0);
+	}
+
+    }  
+    GD.waitvblank();  
+    GD.__end();
+  }  
+  delay(1500);
+  for (int i=0; i<142;i++){
+    GD.__wstartspr(0);
+    draw_sprite(184, 142+i, spW, 0);  
+    draw_sprite(200, 142-i, spE, 0);  
+    GD.waitvblank();  
+    GD.__end();
+  }  
+  
+  GD.__wstartspr(0);
+  //parking
+  for (byte j=0; j<n; j++){ 
+    draw_sprite(401,401,letters[j],0);
+  }
+  GD.__end();
+  //delay(500);
+}
 
 
 void setup(){
