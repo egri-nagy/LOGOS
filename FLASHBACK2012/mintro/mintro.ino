@@ -144,9 +144,40 @@ void setup(){
   delay(500);  
   letters[0]=spH;
   letters[1]=spA;
-  letters[1]=spD;
+  letters[2]=spD;
   textshoot(3); 
+  delay(500);  
+  letters[0]=spN;
+  letters[1]=spO;
+  textshoot(2);
+  delay(500);  
+  letters[0]=spT;
+  letters[1]=spI;
+  letters[2]=spM;
+  letters[3]=spE;
+  textshoot(4); 
+  delay(500);  
+  letters[0]=spB;
+  letters[1]=spU;
+  letters[2]=spT;
+  textshoot(3); 
+  delay(500);  
+  letters[0]=spW;
+  letters[1]=spE;
+  textshoot(2);
+  delay(500);  
+  letters[0]=spA;
+  letters[1]=spR;
+  letters[2]=spE;
+  textshoot(3); 
+  delay(500);  
+  letters[0]=spH;
+  letters[1]=spE;
+  letters[2]=spR;
+  letters[3]=spE;
+  textshoot(4); 
 
+  delay(1000);
 
   
   fade();
