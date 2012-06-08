@@ -57,18 +57,17 @@ void fade(){
 
 
 void textshoot(int n){
-
-  //WE
+  int start = 200 - (n*8); 
   for (int i=0; i<142;i++){
     GD.__wstartspr(0);
     for (byte j=0; j<n; j++){ 
-      if (j mod 2)
+      if (j % 2)
 	{
-	  draw_sprite(200+j*16, i, letters[j], 0);
+	  draw_sprite(start+(j*16), i, letters[j], 0);
 	}
       else
 	{
-	  draw_sprite(200-(j*16), 282-i, letters[j], 0);
+	  draw_sprite(start+(j*16), 282-i, letters[j], 0);
 	}
 
     }  
@@ -78,19 +77,27 @@ void textshoot(int n){
   delay(1500);
   for (int i=0; i<142;i++){
     GD.__wstartspr(0);
-    draw_sprite(184, 142+i, spW, 0);  
-    draw_sprite(200, 142-i, spE, 0);  
+    for (byte j=0; j<n; j++){ 
+      if (j % 2)
+	{
+	  draw_sprite(start+(j*16), 142+i, letters[j], 0);
+	}
+      else
+	{
+	  draw_sprite(start+(j*16), 142-i, letters[j], 0);
+	}
+
+    }  
     GD.waitvblank();  
     GD.__end();
   }  
-  
+
   GD.__wstartspr(0);
   //parking
   for (byte j=0; j<n; j++){ 
     draw_sprite(401,401,letters[j],0);
   }
   GD.__end();
-  //delay(500);
 }
 
 
@@ -130,149 +137,18 @@ void setup(){
   GD.__end();
   graypal();
 
-  //delay(2500);
-  //WE
-  for (int i=0; i<142;i++){
-    GD.__wstartspr(0);
-    draw_sprite(184, i, spW, 0);  
-    draw_sprite(200, 282-i, spE, 0);  
-    GD.waitvblank();  
-    GD.__end();
-  }  
-  delay(1500);
-  for (int i=0; i<142;i++){
-    GD.__wstartspr(0);
-    draw_sprite(184, 142+i, spW, 0);  
-    draw_sprite(200, 142-i, spE, 0);  
-    GD.waitvblank();  
-    GD.__end();
-  }  
-
-  GD.__wstartspr(0);
-  draw_sprite(401,401,spW,0);
-  draw_sprite(401,401,spE,0);
-
-  GD.__end();
-
-  delay(500);
-  //HAD
-  for (int i=0; i<142;i++){
-    GD.__wstartspr(0);
-    draw_sprite(184, i, spH, 0);  
-    draw_sprite(200, 282-i, spA, 0);  
-    draw_sprite(216, i, spD, 0);  
-
-    GD.waitvblank();  
-    GD.__end();
-  }  
-  delay(1500);
-  for (int i=0; i<142;i++){
-    GD.__wstartspr(0);
-    draw_sprite(184, 142+i, spH, 0);  
-    draw_sprite(200, 142-i, spA, 0);  
-    draw_sprite(216, 142+i, spD, 0);  
-
-    GD.waitvblank();  
-    GD.__end();
-  }  
-
-  GD.__wstartspr(0);
-  draw_sprite(401,401,spH,0);
-  draw_sprite(401,401,spA,0);
-  draw_sprite(401,401,spD,0);
-
-  GD.__end();
-
-  delay(500);
-  //NO
-  for (int i=0; i<142;i++){
-    GD.__wstartspr(0);
-    draw_sprite(184, i, spN, 0);  
-    draw_sprite(200, 282-i, spO, 0);  
-    GD.waitvblank();  
-    GD.__end();
-  }  
-  delay(1500);
-  for (int i=0; i<142;i++){
-    GD.__wstartspr(0);
-    draw_sprite(184, 142+i, spN, 0);  
-    draw_sprite(200, 142-i, spO, 0);  
-    GD.waitvblank();  
-    GD.__end();
-  }  
-
-  GD.__wstartspr(0);
-  draw_sprite(401,401,spN,0);
-  draw_sprite(401,401,spO,0);
-
-  GD.__end();
-
-  delay(500);
-  //TIME
-  for (int i=0; i<142;i++){
-    GD.__wstartspr(0);
-    draw_sprite(184, i, spT, 0);  
-    draw_sprite(200, 282-i, spI, 0);  
-    draw_sprite(216, i, spM, 0);  
-    draw_sprite(232, i, spE, 0);  
-
-    GD.waitvblank();  
-    GD.__end();
-  }  
-  delay(1500);
-  for (int i=0; i<142;i++){
-    GD.__wstartspr(0);
-    draw_sprite(184, 142+i, spT, 0);  
-    draw_sprite(200, 142-i, spI, 0);  
-    draw_sprite(216, 142+i, spM, 0);  
-    draw_sprite(232, 142-i, spE, 0);  
-
-    GD.waitvblank();  
-    GD.__end();
-  }  
-
-  GD.__wstartspr(0);
-  draw_sprite(401,401,spT,0);
-  draw_sprite(401,401,spI,0);
-  draw_sprite(401,401,spM,0);
-  draw_sprite(401,401,spE,0);
-
-  GD.__end();
-
-  delay(500);
-  //BUT
-  for (int i=0; i<142;i++){
-    GD.__wstartspr(0);
-    draw_sprite(184, i, spH, 0);  
-    draw_sprite(200, 282-i, spH, 4);  
-    draw_sprite(216, i, spD, 0);  
-
-    GD.waitvblank();  
-    GD.__end();
-  }  
-  delay(1500);
-  for (int i=0; i<142;i++){
-    GD.__wstartspr(0);
-    draw_sprite(184, 142+i, spH, 0);  
-    draw_sprite(200, 142-i, spA, 0);  
-    draw_sprite(216, 142+i, spD, 0);  
-
-    GD.waitvblank();  
-    GD.__end();
-  }  
-
-  GD.__wstartspr(0);
-  draw_sprite(401,401,spH,0);
-  draw_sprite(401,401,spA,0);
-  draw_sprite(401,401,spD,0);
-
-  GD.__end();
-
-  delay(500);
+  delay(500);  
+  letters[0]=spW;
+  letters[1]=spE;
+  textshoot(2);
+  delay(500);  
+  letters[0]=spH;
+  letters[1]=spA;
+  letters[1]=spD;
+  textshoot(3); 
 
 
-  GD.waitvblank();
-
+  
   fade();
   GD.wr(J1_RESET,1);
   GD.ascii();
