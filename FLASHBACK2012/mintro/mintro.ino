@@ -7,22 +7,23 @@
 #define GRAY(c)  RGB(c,c,c)
 #define WHITE RGB(0xff,0xff,0xff)
 #define LAG 16
+#define PRECALCTAB 97
 
 //to put maximum for letter there
 byte letters[4];
 
 byte pointer=0;
 byte np = 1;
-float xs[100];
-float ys[100];
-float zs[100]; 
+float xs[PRECALCTAB];
+float ys[PRECALCTAB];
+float zs[PRECALCTAB]; 
 float a = -5.5;
 float b = 3.5;
 float c = -1;
 float xn = 0.1;
 float yn = 0;
 float zn = 0;
-float dt = 0.01; 
+float dt = 0.011; 
 
 
 
@@ -146,7 +147,7 @@ static void pause(int n)
   load();
   long started = millis();
   while (millis() < (started + n * 3 / 2)) {
-  np = (pointer + 1) % 100;
+  np = (pointer + 1) % PRECALCTAB;
   xn = ys[pointer];
   yn = zs[pointer];
   zn = -a*xs[pointer]-b*ys[pointer]-zs[pointer]+c*pow(xs[pointer],3);
@@ -155,11 +156,11 @@ static void pause(int n)
   zs[np] = zs[pointer]+zn*dt;
   pointer = np;
   GD.__wstartspr(0);
-  draw_sprite(200+(50*xs[(pointer+5*LAG)%100]), 152+(20*ys[(pointer+5*LAG)%100]),spL,0);
-  draw_sprite(200+(50*xs[(pointer+4*LAG)%100]), 152+(20*ys[(pointer+4*LAG)%100]),spO,0);
-  draw_sprite(200+(50*xs[(pointer+3*LAG)%100]), 152+(20*ys[(pointer+3*LAG)%100]),spG,0);
-  draw_sprite(200+(50*xs[(pointer+2*LAG)%100]), 152+(20*ys[(pointer+2*LAG)%100]),spO,0);
-  draw_sprite(200+(50*xs[(pointer+1*LAG)%100]), 152+(20*ys[(pointer+1*LAG)%100]),spS,0);
+  draw_sprite(200+(50*xs[(pointer+5*LAG)%PRECALCTAB]), 152+(20*ys[(pointer+5*LAG)%PRECALCTAB]),spL,0);
+  draw_sprite(200+(50*xs[(pointer+4*LAG)%PRECALCTAB]), 152+(20*ys[(pointer+4*LAG)%PRECALCTAB]),spO,0);
+  draw_sprite(200+(50*xs[(pointer+3*LAG)%PRECALCTAB]), 152+(20*ys[(pointer+3*LAG)%PRECALCTAB]),spG,0);
+  draw_sprite(200+(50*xs[(pointer+2*LAG)%PRECALCTAB]), 152+(20*ys[(pointer+2*LAG)%PRECALCTAB]),spO,0);
+  draw_sprite(200+(50*xs[(pointer+1*LAG)%PRECALCTAB]), 152+(20*ys[(pointer+1*LAG)%PRECALCTAB]),spS,0);
   GD.__end();
   GD.waitvblank();
 
@@ -194,24 +195,29 @@ void setup(){
   GD.begin();
   GD.ascii();
   //sound();
-  GD.putstr(0,0,"MINTRO for FLASHBACK 2012");
-  GD.putstr(0,2,"CPU: Atmega 328 8-bit, 32K flash, 2K RAM");
+  char* info[] ={
+    "MINTRO for FLASHBACK 2012",
+    "CPU: Atmega 328 8-bit, 32K flash, 2K RAM"
+  };
+  GD.putstr(0,0,info[0]);
+  GD.putstr(0,2,info[1]);
   GD.putstr(0,4,"Graphic/Sound Chip: Xilinx FPGA" );
 
   GD.putstr(0,8,"CODE: @" );
   GD.putstr(0,10,"GFX: pfff" );
-  GD.putstr(0,12,"SFX: n/a  ...well @");
+  GD.putstr(0,12,"SFX: @");
 
   GD.putstr(0,14,"Oldskool VGA monitor by GNG");
 
   delay(2000);
-  for (int i=0; i<200;i++){
+  for (int i=0; i<3200;i++){
     GD.wr16(SCROLL_Y, i);
     GD.waitvblank();
     GD.waitvblank();
 
   }
   //delay(2000);
+  GD.begin();
   GD.wr16(SCROLL_Y, 0);
 
   graypal();
@@ -272,6 +278,8 @@ void setup(){
   
   fade();
   GD.wr(J1_RESET,1);
+  GD.fill(RAM_PIC, 0, 1024 * 10);  // Zero all character RAM
+
   GD.ascii();
   //filling it up with values
   xs[0] = 0.1; //initial x
@@ -287,12 +295,21 @@ void setup(){
     zs[i+1] = zs[i]+zn*dt;
 
   }
-  GD.putstr(0,0,"Chaotic Trajectory");  
+  GD.putstr(0,0,"Chaotic Trajectory & Folksy Music");  
 }
 
+int playcount = 0;
 void loop()
 {
-  play();
+  if (playcount < 2) {
+     play();
+     playcount++;
+  }
+  else{
+    GD.begin();
+    GD.ascii();
+    GD.putstr(0,0,"END OF CARELESSLY CODED 13K INTRO");
+  }
 
 }
 
