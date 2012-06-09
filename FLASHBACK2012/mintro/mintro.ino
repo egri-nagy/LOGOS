@@ -220,6 +220,11 @@ void intro(){
     GD.waitvblank();
     }
   }
+   for (int j = 0; j<64;j++){
+      GD.wr16(SCROLL_Y, GD.rd16(SCROLL_Y)+1);
+    GD.waitvblank();  
+   }
+
   delay(2000);
    for (int j = 0; j<512;j++){
       GD.wr16(SCROLL_X, GD.rd16(SCROLL_X)+1);
@@ -233,7 +238,6 @@ void intro(){
 void setup(){
   intro();
   GD.begin();
-//  GD.wr16(SCROLL_Y, 0);
 
   graypal();
   GD.microcode(random_code, sizeof(random_code));
@@ -242,12 +246,12 @@ void setup(){
   GD.uncompress(RAM_SPRIMG, sprite_sprimg);
 
   // For show, randomly scatter the frames on the screen
-  GD.__wstartspr(0);
-  for (int anim = 0; anim < 256; anim++)
-    draw_sprite(401,401, anim, 0);
-  GD.__end();
-  graypal();
-
+  //GD.__wstartspr(0);
+  //for (int anim = 0; anim < 256; anim++)
+    //draw_sprite(401,401, anim, 0);
+  //GD.__end();
+  //graypal();
+  GD.voice(0,1,81,9,9);
   delay(500);  
   letters[0]=spW;
   letters[1]=spE;
