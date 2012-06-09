@@ -7,7 +7,7 @@
 #define GRAY(c)  RGB(c,c,c)
 #define WHITE RGB(0xff,0xff,0xff)
 #define LAG 16
-#define PRECALCTAB 97
+#define PRECALCTAB 81
 
 //to put maximum for letter there
 byte letters[4];
@@ -75,7 +75,7 @@ void textshoot(int n){
     GD.waitvblank();  
     GD.__end();
   }  
-  delay(1111);
+  delay(999);
   for (int i=0; i<142;i++){
     GD.__wstartspr(0);
     for (byte j=0; j<n; j++){ 
@@ -190,35 +190,50 @@ static void play()
   }
 }
 
-
-void setup(){
+void intro(){
   GD.begin();
   GD.ascii();
-  //sound();
   char* info[] ={
+    "LOGOS proudly presents",
     "MINTRO for FLASHBACK 2012",
-    "CPU: Atmega 328 8-bit, 32K flash, 2K RAM"
+    "on the Gameduino shield on top of Arduino board",
+    "CPU: Atmega 328 8-bit 16MHz, 32K flash, 2K RAM",
+    "Graphic/Sound Chip: Xilinx FPGA",
+    "CODE: @",
+    "GFX: pfff",
+    "Music: @ (yes, it is an available position)",
+    "HW support: GNG (giving us an 4:3 VGA monitor)", 
+     "______________________________________________",
+     "Beat us by coding better intros!! It is easy!!",    
+     "______________________________________________",
+     "Greetings to lft, luis, jbridon!" 
   };
-  GD.putstr(0,0,info[0]);
-  GD.putstr(0,2,info[1]);
-  GD.putstr(0,4,"Graphic/Sound Chip: Xilinx FPGA" );
 
-  GD.putstr(0,8,"CODE: @" );
-  GD.putstr(0,10,"GFX: pfff" );
-  GD.putstr(0,12,"SFX: @");
 
-  GD.putstr(0,14,"Oldskool VGA monitor by GNG");
+  delay(200);
+   for (int i=0; i<13;i++){
+       GD.putstr(0,38 + 2*i, info[i]);
 
-  delay(2000);
-  for (int i=0; i<3200;i++){
-    GD.wr16(SCROLL_Y, i);
+    for (int j = 0; j<16;j++){
+      GD.wr16(SCROLL_Y, GD.rd16(SCROLL_Y)+1);
     GD.waitvblank();
     GD.waitvblank();
-
+    }
   }
-  //delay(2000);
+  delay(2000);
+   for (int j = 0; j<512;j++){
+      GD.wr16(SCROLL_X, GD.rd16(SCROLL_X)+1);
+    GD.waitvblank();  
+   }
+   delay(2000);
+
+}
+
+
+void setup(){
+  intro();
   GD.begin();
-  GD.wr16(SCROLL_Y, 0);
+//  GD.wr16(SCROLL_Y, 0);
 
   graypal();
   GD.microcode(random_code, sizeof(random_code));
@@ -295,7 +310,11 @@ void setup(){
     zs[i+1] = zs[i]+zn*dt;
 
   }
+  
   GD.putstr(0,0,"Chaotic Trajectory & Folksy Music");  
+  GD.copy(PALETTE4A, sprite_sprgreenpal, sizeof(sprite_sprgreenpal));
+//GD.uncompress(RAM_SPRIMG, sprite_sprimg);
+
 }
 
 int playcount = 0;
